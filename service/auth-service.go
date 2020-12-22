@@ -13,7 +13,7 @@ import (
 type AuthService interface {
 	VerifyCredential(email string, password string) interface{}
 	//register itu di auth service bukan di user service, user nanti cuma update profle dll
-	CreateUser(user dto.UserCreateDTO) entity.User
+	CreateUser(user dto.RegisterDTO) entity.User
 	FindByEmail(email string) entity.User
 	IsDuplicateEmail(email string) bool
 }
@@ -42,7 +42,7 @@ func (service *authService) VerifyCredential(email string, password string) inte
 	return true
 }
 
-func (service *authService) CreateUser(user dto.UserCreateDTO) entity.User {
+func (service *authService) CreateUser(user dto.RegisterDTO) entity.User {
 	userToCreate := entity.User{}
 	//kita perlu mapping pake smapping, install smapping
 	//kita pake struct yang mau diisi, dan dari apa yang mau diisi, dan mana data yang mau diambil
