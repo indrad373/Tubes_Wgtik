@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"golang_api/entity"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
@@ -28,7 +29,8 @@ func SetupDatabaseConnection() *gorm.DB {
 	}
 
 	//todo : simpan logic disini
-
+	//kita simpan modelnya disini
+	db.AutoMigrate(&entity.Book{}, &entity.User{})
 	return db
 }
 
