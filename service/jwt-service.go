@@ -20,7 +20,7 @@ type JWTService interface {
 //bikin custom klaim
 
 type jwtCustomClaim struct {
-	userID string `json:"user_id"`
+	UserID string `json:"user_id"`
 	//jwt.StandardClaims ini adalah standar jwt untuk expired time gitu, biasa ada issuer nya gitu
 	jwt.StandardClaims
 }
@@ -82,7 +82,7 @@ func (j *jwtService) ValidateToken(token string) (*jwt.Token, error) {
 	return jwt.Parse(token, func(t_ *jwt.Token) (interface{}, error) {
 		if _, ok := t_.Method.(*jwt.SigningMethodHMAC); !ok {
 			//signin method nya ga dikenali
-			return nil, fmt.Errorf("Unexpected signin method", t_.Header["alg"])
+			return nil, fmt.Errorf("Unexpected signin method %v", t_.Header["alg"])
 		}
 
 		//kalo ada serangan buat ngasih algo yang salah kita bisa validasi disini

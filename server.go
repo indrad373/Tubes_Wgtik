@@ -3,6 +3,7 @@ package main
 import (
 	"golang_api/config"
 	"golang_api/controller"
+	"golang_api/middleware"
 	"golang_api/repository"
 	"golang_api/service"
 
@@ -16,8 +17,10 @@ var (
 
 	jwtService  service.JWTService  = service.NewJWTService()
 	authService service.AuthService = service.NewAuthService(userRepository)
+	userService service.UserService = service.NewUserService(userRepository)
 
 	authController controller.AuthController = controller.NewAuthController(authService, jwtService)
+	userController controller.UserController = controller.NewUserController(userService, jwtService)
 )
 
 func main() {
@@ -30,5 +33,12 @@ func main() {
 		authRoutes.POST("/login", authController.Login)
 		authRoutes.POST("/register", authController.Register)
 	}
+
+	userRoutes := r.Group("api/user", middleware.AuthorizeJWT(jwtService))
+	{
+		userRoutes.GET("/profile", userController.Profile)
+		userRoutes.PUT("/profile", userController.Update)
+	}
+
 	r.Run()
 }
